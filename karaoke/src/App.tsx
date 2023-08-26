@@ -7,7 +7,7 @@ function App() {
   const [song, setSong] = useState("")
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [isAuthenticated, setIsAuthenticated] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function setUsernameText(e: any) {
@@ -40,11 +40,19 @@ function App() {
       setIsAuthenticated(true);
     }
 
+    localStorage.setItem("loggedIn", "true")
+
     setUsername("");
     setPassword("");
   }
   
-  useEffect(() => {setSong(videos[Math.floor(Math.random() * 14)])}, [])
+  useEffect(() => {
+    setSong(videos[Math.floor(Math.random() * 14)])
+    
+    if (localStorage.getItem("loggedIn")) {
+      setIsAuthenticated(true)
+    }
+  }, [])
 
   return (
     <>
