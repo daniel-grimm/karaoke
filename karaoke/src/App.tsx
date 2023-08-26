@@ -1,9 +1,49 @@
 import { useState } from 'react'
 import './App.css'
+import { videos } from './videos'
 
 function App() {
   const [count, setCount] = useState(0)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [isAuthenticated, setIsAuthenticated] = useState(true)
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function setUsernameText(e: any) {
+    let usernameVal = ""
+    if (e.data != null)
+    {
+        usernameVal = username + e?.data;
+    }
+    else
+    {
+        username.length > 1 ? usernameVal = username.substring(0, username.length - 1) : usernameVal = "";
+    }
+    setUsername(usernameVal)
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function setPasswordText(e: any) {
+    let passwordVal = ""
+    if (e.data != null)
+    {
+        passwordVal = password + e?.data;
+    }
+    else
+    {
+      password.length > 1 ? passwordVal = password.substring(0, password.length - 1) : passwordVal = "";
+    }
+    setPassword(passwordVal)
+  }
+
+  function login() {
+    if (username === "daniel" && password === "grimm") {
+      setIsAuthenticated(true)
+    }
+
+    setUsername("")
+    setPassword("")
+  }
 
   return (
     <>
@@ -11,30 +51,33 @@ function App() {
         <>
           <h1>Please Login</h1>
           <div>
-            <input type="text" placeholder='Username' />
+            <input
+              type="text"
+              placeholder='Username'
+              value={username}
+              onChange={() => setUsernameText(event)}
+            />
           </div>
 
           <div>
-            <input type="text" placeholder='Password' />
+            <input
+              type="password"
+              placeholder='Password'
+              value={password}
+              onChange={() => setPasswordText(event)}
+            />
           </div>
 
-          <button>Submit</button>
+          <button onClick={() => login()}>Submit</button>
         </>
       }
       {isAuthenticated &&
         <>
-          <h1>Karaoke</h1>
-          <div className="card">
-            <button onClick={() => setCount((count) => count + 1)}>
-              count is {count}
-            </button>
-            <p>
-              Edit <code>src/App.tsx</code> and save to test HMR
-            </p>
-          </div>
-          <p className="read-the-docs">
-            Click on the Vite and React logos to learn more
-          </p>
+          <h1>Welcome to Karaoke!</h1>
+          <video width="640" height="380" controls>
+            <source src={videos.dancingQueen} type="video/mp4" />
+            Video not supported
+          </video>
         </>
       }
     </>
