@@ -1,59 +1,60 @@
-import { useState } from 'react'
-import './App.css'
-import { videos } from './videos'
+import { useEffect, useState } from "react";
+import "./App.css";
+import { videos } from "./videos";
+import { Fit } from "./App.style";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [song, setSong] = useState("")
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [isAuthenticated, setIsAuthenticated] = useState(true)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function setUsernameText(e: any) {
-    let usernameVal = ""
-    if (e.data != null)
-    {
-        usernameVal = username + e?.data;
+    let usernameVal = "";
+    if (e.data != null) {
+      usernameVal = username + e?.data;
+    } else {
+      username.length > 1
+        ? (usernameVal = username.substring(0, username.length - 1))
+        : (usernameVal = "");
     }
-    else
-    {
-        username.length > 1 ? usernameVal = username.substring(0, username.length - 1) : usernameVal = "";
-    }
-    setUsername(usernameVal)
+    setUsername(usernameVal);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function setPasswordText(e: any) {
-    let passwordVal = ""
-    if (e.data != null)
-    {
-        passwordVal = password + e?.data;
+    let passwordVal = "";
+    if (e.data != null) {
+      passwordVal = password + e?.data;
+    } else {
+      password.length > 1
+        ? (passwordVal = password.substring(0, password.length - 1))
+        : (passwordVal = "");
     }
-    else
-    {
-      password.length > 1 ? passwordVal = password.substring(0, password.length - 1) : passwordVal = "";
-    }
-    setPassword(passwordVal)
+    setPassword(passwordVal);
   }
 
   function login() {
     if (username === "daniel" && password === "grimm") {
-      setIsAuthenticated(true)
+      setIsAuthenticated(true);
     }
 
-    setUsername("")
-    setPassword("")
+    setUsername("");
+    setPassword("");
   }
+  
+  useEffect(() => {setSong(videos[Math.floor(Math.random() * 14)])}, [])
 
   return (
     <>
-      {!isAuthenticated &&
+      {!isAuthenticated && (
         <>
           <h1>Please Login</h1>
           <div>
             <input
               type="text"
-              placeholder='Username'
+              placeholder="Username"
               value={username}
               onChange={() => setUsernameText(event)}
             />
@@ -62,7 +63,7 @@ function App() {
           <div>
             <input
               type="password"
-              placeholder='Password'
+              placeholder="Password"
               value={password}
               onChange={() => setPasswordText(event)}
             />
@@ -70,18 +71,20 @@ function App() {
 
           <button onClick={() => login()}>Submit</button>
         </>
-      }
-      {isAuthenticated &&
+      )}
+      {isAuthenticated && (
         <>
-          <h1>Welcome to Karaoke!</h1>
-          <video width="640" height="380" controls>
-            <source src={videos.dancingQueen} type="video/mp4" />
-            Video not supported
-          </video>
+          <h3>Welcome to Karaoke!</h3>
+          <Fit>
+            <video controls>
+              <source src={song} type="video/mp4" />
+              Video not supported
+            </video>
+          </Fit>
         </>
-      }
+      )}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
